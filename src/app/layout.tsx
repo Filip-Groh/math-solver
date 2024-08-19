@@ -7,6 +7,7 @@ import { TRPCReactProvider } from "~/trpc/react";
 import { ThemeProvider } from "~/components/theme/theme-provider"
 import MainMenu, { type MenuItem } from "~/components/menu/mainMenu";
 import { Home } from "lucide-react"
+import { TooltipProvider } from "~/components/ui/tooltip";
 
 export const metadata: Metadata = {
     title: "Create T3 App",
@@ -18,6 +19,10 @@ const menuItems: MenuItem[] = [
     {
         path: "/",
         description: <Home />
+    },
+    {
+        path: "/playground",
+        description: "Playground"
     }
 ]
 
@@ -25,8 +30,8 @@ export default function RootLayout({
     children,
 }: Readonly<{ children: React.ReactNode }>) {
     return (
-        <html lang="en" className={`${GeistSans.variable}`} suppressHydrationWarning>
-            <body>
+        <html lang="en" className={`${GeistSans.variable} h-full`} suppressHydrationWarning>
+            <body className="h-full flex flex-col">
                 <TRPCReactProvider>
                     <ThemeProvider
                         attribute="class"
@@ -34,12 +39,14 @@ export default function RootLayout({
                         enableSystem
                         disableTransitionOnChange
                     >
-                        <header>
-                            <MainMenu menuItems={menuItems} />
-                        </header>
-                        <main>
-                            {children}
-                        </main>
+                        <TooltipProvider>
+                            <header>
+                                <MainMenu menuItems={menuItems} />
+                            </header>
+                            <main className="flex-grow p-2">
+                                {children}
+                            </main>                            
+                        </TooltipProvider>
                     </ThemeProvider>
                 </TRPCReactProvider>
             </body>
